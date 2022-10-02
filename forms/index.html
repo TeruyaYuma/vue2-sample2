@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak] {
+          display: none;
+        }
+        </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <form @submit.prevent="validate">
+            <label for="name">name</label>
+            <input id="name" type="text" v-model="name">
+            <label for="adress">adress</label>
+            <input id="adress" type="text" v-model="contact.adress">
+
+            <select v-model="contact.age">
+                <option disable value="">年齢を選択して下さい</option>
+                <option>10代</option>
+                <option>20代</option>
+                <option>30代</option>
+            </select>
+
+            <input type="checkbox" value="wetサイト" v-model="contact.attracts">
+            <input type="checkbox" value="チラシ" v-model="contact.attracts">
+            <input type="checkbox" value="その他" v-model="contact.attracts">
+
+            注意事項に同意する
+            <input type="checkbox" value="wetサイト" v-model="contact.caution">
+
+            <input type="submit" value="送信">
+        </form>
+
+        <ul>
+            <li>{{contact.name}}</li>
+            <li>{{contact.adress}}</li>
+            <li>{{contact.age}}</li>
+            <li>{{contact.attracts}}</li>
+            <li>{{contact.caution}}</li>
+        </ul>
+
+        <ul v-if="errors.length" :style="{color: 'red'}">
+            <li v-for="error in errors">{{error}}</li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    contact: {
+                        name: '',
+                        adress: '',
+                        age: '',
+                        attracts: [],
+                        caution: false
+                    },
+                    errors: []
+                }
+            },
+            methods: {
+                validate(e) {
+                    this.errors = []
+                    const {name, adress, age, attracts, cation} = this.contact
+
+                    if(!name || !adress || !age || !attracts.length || cation){
+                        this.errors.push('全て記入して下さい')
+                        return
+                    }
+                    window.alert('送信されました。')
+                }
+            },
+            computed: {
+                name: {
+                    get: function() {
+                        return this.contact.name
+                    },
+                    set: function(val) {
+                        if(val.length >= 20) {
+                            window.alert('20文字以内でお願いします。')
+                        }
+                        this.contact.name = val
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

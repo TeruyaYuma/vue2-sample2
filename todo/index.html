@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>TODO</h1>
+        <div>
+            todo:
+            <input type="text" v-model="todo">
+            検索
+            <input type="text" v-model="query">
+        </div>
+        <div @click="create">作成</div>
+        <ul v-if="todos.length">
+            <li v-for="(todo, index) in filteredList">
+                <span>{{index + 1}}</span>
+                <input type="checkbox" :checked="todo.done">
+                <span>{{todo.todo}}</span>
+                <button @click="destroy(index)">削除</button>
+            </li>
+        </ul>
+
+        <div>{{todo}}</div>
+        <div>{{todos.length}}</div>
+        
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    todos: [],
+                    todo: "",
+                    query: ""
+                }
+            },
+            methods: {
+                create() {
+                    const todo = {
+                        todo: this.todo,
+                        done: false
+                    }
+                    this.todos.push(todo)
+                },
+                destroy(index) {
+                    this.todos.splice(index, 1)
+                    // const todos = this.todos.filter(todo => todo.id !== id)
+                    // this.todos = todos
+                },
+                search(e) {
+                    console.log('search')
+                    // const search = e.target.value
+                    // console.log('todos:', this.todos)
+                    // const todos = this.todos.filter(todo => {
+                    //     todo.todo.indexOf(search) !== -1
+                    // })
+                    // console.log(todos)
+                }
+            },
+            computed: {
+                filteredList() {
+                    let query = this.query
+                    return this.todos.filter(todo => {
+                        return todo.todo.indexOf(query) !== -1
+                    })
+                }
+            },
+            created() {
+                console.log('created')
+            },
+            mounted() {
+                console.log('mounted')
+            }   
+        })
+    </script>
+</body>
+</html>
